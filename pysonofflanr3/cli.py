@@ -238,17 +238,17 @@ def switch_device(config: dict, inching, new_state):
                 if inching is None:
                     print_device_details(device)
 
-                    if device.is_on(config["switch_id"]):
+                    if device.is_on:
                         if new_state == "on":
                             device.shutdown_event_loop()
                         else:
-                            await device.turn_off(config["switch_id"])
+                            await device.turn_off()
 
-                    elif device.is_off(config["switch_id"]):
+                    elif device.is_off:
                         if new_state == "off":
                             device.shutdown_event_loop()
                         else:
-                            await device.turn_on(config["switch_id"])
+                            await device.turn_on()
 
                 else:
                     logger.info(
