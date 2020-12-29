@@ -55,6 +55,12 @@ pass_config = click.make_pass_decorator(dict, ensure=True)
 
 @click.group(invoke_without_command=True)
 @click.option(
+    "--gang_switch_id",
+    envvar="PYSONOFFLAN_gang_switch_id",
+    required=False,
+    help="Optional switch id if using multigang switch such as Tx.",
+)
+@click.option(
     "--host",
     envvar="PYSONOFFLAN_HOST",
     required=False,
@@ -88,7 +94,7 @@ pass_config = click.make_pass_decorator(dict, ensure=True)
 @click.pass_context
 @click_log.simple_verbosity_option(logger, "--loglevel", "-l")
 @click.version_option()
-def cli(ctx, host, device_id, api_key, inching, wait):
+def cli(ctx, host, device_id, api_key, inching, wait, switch_id):
     """A cli tool for controlling Sonoff Smart Switches/Plugs in LAN Mode."""
     if ctx.invoked_subcommand == "discover":
         return
@@ -104,6 +110,7 @@ def cli(ctx, host, device_id, api_key, inching, wait):
         "api_key": api_key,
         "inching": inching,
         "wait": wait,
+        "switch_id": switch_id
     }
 
 
@@ -229,17 +236,17 @@ def switch_device(config: dict, inching, new_state):
                 if inching is None:
                     print_device_details(device)
 
-                    if device.is_on:
+                    if device.is_on(config["switch_id"]):
                         if new_state == "on":
                             device.shutdown_event_loop()
                         else:
-                            await device.turn_off()
+                            await device.turn_off(config["switch_id"])
 
-                    elif device.is_off:
+                    elif device.is_off(config["switch_id"]):
                         if new_state == "off":
                             device.shutdown_event_loop()
                         else:
-                            await device.turn_on()
+                            await device.turn_on(config["switch_id"])
 
                 else:
                     logger.info(
