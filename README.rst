@@ -42,6 +42,12 @@ pysonofflanr3
 Control Sonoff devices running original firmware, in LAN mode.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+DISCLAIMER - I have modified this unmaintained library to add in --outlet flag for the commandline as thats what I use
+
+put not effort in as its no longer being maintained, could try pull request on original if it was worth it
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 To control Sonoff switches running the V3+ Itead firmware (tested on 3.0, 3.0.1, 3.1.0, 3.3.0, 3.4.0, 3.5.0), locally (LAN mode).
 
 # No longer maintained!
