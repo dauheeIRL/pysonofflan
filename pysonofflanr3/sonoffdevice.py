@@ -319,6 +319,7 @@ class SonoffDevice(object):
                 or self.client.type == b"diy_plug"
                 or self.client.type == b"enhanced_plug"
                 or self.client.type == b"th_plug"
+                or self.client.type == b"switch_radar"
             ):
 
                 switch_status = response["switch"]
