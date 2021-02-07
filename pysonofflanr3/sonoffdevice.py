@@ -305,7 +305,7 @@ class SonoffDevice(object):
 
             response = json.loads(message.decode("utf-8"))
 
-            if self.client.type == b"strip":
+            if (self.client.type == b"strip" or self.client.type == b"switch_radar"):
 
                 if self.outlet is None:
                     self.outlet = 0
@@ -318,8 +318,7 @@ class SonoffDevice(object):
                 self.client.type == b"plug"
                 or self.client.type == b"diy_plug"
                 or self.client.type == b"enhanced_plug"
-                or self.client.type == b"th_plug"
-                or self.client.type == b"switch_radar"
+                or self.client.type == b"th_plug"                
             ):
 
                 switch_status = response["switch"]
