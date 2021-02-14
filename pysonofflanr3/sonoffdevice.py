@@ -412,7 +412,7 @@ class SonoffDevice(object):
             if self.new_loop:
                 tasks.add_done_callback(lambda t: self.loop.stop())
             tasks.cancel()
-            print('xxx4')
+            #print('xxx4')
             # Keep the event loop running until it is either
             # destroyed or all tasks have really terminated
             
@@ -424,7 +424,7 @@ class SonoffDevice(object):
                 ):
                     self.loop.run_forever()
             
-            print('xxx5')
+            #print('xxx5')
         except Exception as ex:  # pragma: no cover
             self.logger.error(
                 "Unexpected error in shutdown_event_loop(): %s", format(ex)
