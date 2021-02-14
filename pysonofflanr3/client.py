@@ -85,10 +85,14 @@ class SonoffLANModeClient:
 
     def close_connection(self):
 
+        #print(SonoffLANModeClient.zeroconf)
         self.logger.debug("enter close_connection()")
+        self.service_browser.cancel()#added
         self.service_browser = None
         self.disconnected_event.set()
         self.my_service_name = None
+        self._info_cache = None#added
+        self.loop.run_in_executor(None, self.retry_connection)#added
 
     def remove_service(self, zeroconf, type, name):
 
