@@ -43,10 +43,53 @@ Control Sonoff devices running original firmware, in LAN mode.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-DISCLAIMER - I have modified this unmaintained library to add in --outlet flag for the commandline as thats what I use
+DISCLAIMER - put no effort in as its no longer being maintained, could try pull request on original if it was worth it
 
-put not effort in as its no longer being maintained, could try pull request on original if it was worth it
+I have modified this unmaintained library to add in --outlet flag for the commandline
+
+I have also modified:
+-added self.client.close_connection() in sonoffdevice.shutdown_event_loop()
+-added self.service_browser.cancel() in SonoffLANModeClient.close_connection()
+these modifications were required to close zombie zeroconf-servicebrowser threads as a new one is created each time an action is called
+
+
+my calling code is:
+
+SonoffSwitch(host=hostin,api_key=key, outlet=outletin, callback_after_update=callback_xx)
+
+async def callback_on(device):
+    if device.basic_info is not None:        
+        if device.is_on:
+            device.shutdown_event_loop() #then calls this second
+        else:
+            await device.turn_on() #calls this first
+
+
+async def callback_off(device):
+    if device.basic_info:        
+        if not device.is_on:
+            device.shutdown_event_loop()
+        else:
+            await device.turn_off()
+
+
+
+alternativly could use this:
+import pysonofflanr3.cli
+#config = {'host':'xxxxx', 'device_id':'xxxxx', 'api_key':'xxxxx', 'outlet':'xxxxx'}
+pysonofflanr3.cli.switch_device(config, None, "on")
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+
+
+
+
+
+
+
+
 
 To control Sonoff switches running the V3+ Itead firmware (tested on 3.0, 3.0.1, 3.1.0, 3.3.0, 3.4.0, 3.5.0), locally (LAN mode).
 
