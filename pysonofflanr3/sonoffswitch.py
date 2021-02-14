@@ -113,6 +113,9 @@ class SonoffSwitch(SonoffDevice):
         else:
             raise ValueError("State %s is not valid.", value)
 
+    def cleanup(self):
+        self.shutdown_event_loop(self)        
+            
     @property
     def is_on(self) -> bool:
         """
