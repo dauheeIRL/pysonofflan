@@ -78,6 +78,10 @@ alternativly could use this:
 import pysonofflanr3.cli
 #config = {'host':'xxxxx', 'device_id':'xxxxx', 'api_key':'xxxxx', 'outlet':'xxxxx'}
 pysonofflanr3.cli.switch_device(config, None, "on")
+
+
+
+I also use func_timeout to wrap the call because if the device is turned off, the code will hang forever
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
