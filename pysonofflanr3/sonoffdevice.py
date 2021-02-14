@@ -391,6 +391,9 @@ class SonoffDevice(object):
         self.logger.debug("shutdown_event_loop called")
 
         try:
+            self.client.close_connection()#added
+            self.client = None
+            del self.client
             # Hide Cancelled Error exceptions during shutdown
             def shutdown_exception_handler(loop, context):
                 if "exception" not in context or not isinstance(
@@ -402,18 +405,17 @@ class SonoffDevice(object):
 
             # Handle shutdown gracefully by waiting for all tasks
             # to be cancelled
-            print('xxx1')
             tasks = asyncio.gather(
                 *self.tasks, loop=self.loop, return_exceptions=True
             )
-            print('xxx2')
+            #print(tasks)
             if self.new_loop:
                 tasks.add_done_callback(lambda t: self.loop.stop())
-            print('xxx3')
             tasks.cancel()
             print('xxx4')
             # Keep the event loop running until it is either
             # destroyed or all tasks have really terminated
+            
             if self.new_loop:
                 while (
                     not tasks.done()
@@ -421,12 +423,13 @@ class SonoffDevice(object):
                     and not self.loop.is_running()
                 ):
                     self.loop.run_forever()
-
+            
+            print('xxx5')
         except Exception as ex:  # pragma: no cover
             self.logger.error(
                 "Unexpected error in shutdown_event_loop(): %s", format(ex)
             )
-
+    
     @property
     def device_id(self) -> str:
         """
