@@ -402,15 +402,16 @@ class SonoffDevice(object):
 
             # Handle shutdown gracefully by waiting for all tasks
             # to be cancelled
+            print('xxx1')
             tasks = asyncio.gather(
                 *self.tasks, loop=self.loop, return_exceptions=True
             )
-
+            print('xxx2')
             if self.new_loop:
                 tasks.add_done_callback(lambda t: self.loop.stop())
-
+            print('xxx3')
             tasks.cancel()
-
+            print('xxx4')
             # Keep the event loop running until it is either
             # destroyed or all tasks have really terminated
             if self.new_loop:
